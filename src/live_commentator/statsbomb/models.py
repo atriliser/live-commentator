@@ -1,4 +1,8 @@
-from pydantic import BaseModel, Field
+from typing import Annotated, Any
+
+from pydantic import BaseModel, Discriminator, Field, Tag
+
+KNOWN_EVENT_TYPES = {"Starting XI", "Pass"}
 
 
 class IdName(BaseModel):
@@ -55,3 +59,27 @@ class PassEvent(BaseEvent):
     position: IdName
     location: tuple[float, float]
     pass_: PassDetails = Field(alias="pass")
+
+
+def event_type_name(v: Any) -> str | None:
+    type_name = v["type"]["name"]
+    if isinstance(type_name, str):
+        return type_name
+    return None
+
+
+def event_tag(v: Any) -> str | None:
+    type_name = event_type_name(v)
+    if type_name is None:
+        return None
+    if type_name in KNOWN_EVENT_TYPES:
+        return type_name
+    return "other"
+
+
+StatsBombEvent = Annotated[
+    Annotated[PassEvent, Tag("Pass")]
+    | Annotated[StartingXIEvent, Tag("Starting XI")]
+    | Annotated[BaseEvent, Tag("other")],
+    Discriminator(event_tag),
+]
