@@ -30,7 +30,7 @@ class BaseEvent(StatsBombModel):
     location: tuple[float, float] | None = None
     position: IdName | None = None
     under_pressure: bool = False
-    related_events: list[str] = []
+    related_events: tuple[str, ...] = ()
     duration: float | None = None
 
 
@@ -42,7 +42,7 @@ class LineupEntry(StatsBombModel):
 
 class Tactics(StatsBombModel):
     formation: int
-    lineup: list[LineupEntry]
+    lineup: tuple[LineupEntry, ...]
 
 
 class StartingXIEvent(BaseEvent):
