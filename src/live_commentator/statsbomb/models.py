@@ -5,14 +5,16 @@ from pydantic import BaseModel, ConfigDict, Discriminator, Field, Tag
 KNOWN_EVENT_TYPES = {"Starting XI", "Pass"}
 
 
-class IdName(BaseModel):
+class StatsBombModel(BaseModel):
     model_config = ConfigDict(frozen=True)
+
+
+class IdName(StatsBombModel):
     id: int
     name: str
 
 
-class BaseEvent(BaseModel):
-    model_config = ConfigDict(frozen=True)
+class BaseEvent(StatsBombModel):
     id: str
     type: IdName
     team: IdName
@@ -32,26 +34,22 @@ class BaseEvent(BaseModel):
     duration: float | None = None
 
 
-class LineupEntry(BaseModel):
-    model_config = ConfigDict(frozen=True)
+class LineupEntry(StatsBombModel):
     player: IdName
     position: IdName
     jersey_number: int
 
 
-class Tactics(BaseModel):
-    model_config = ConfigDict(frozen=True)
+class Tactics(StatsBombModel):
     formation: int
     lineup: list[LineupEntry]
 
 
 class StartingXIEvent(BaseEvent):
-    model_config = ConfigDict(frozen=True)
     tactics: Tactics
 
 
-class PassDetails(BaseModel):
-    model_config = ConfigDict(frozen=True)
+class PassDetails(StatsBombModel):
     recipient: IdName | None = None
     length: float
     angle: float
@@ -61,7 +59,6 @@ class PassDetails(BaseModel):
 
 
 class PassEvent(BaseEvent):
-    model_config = ConfigDict(frozen=True)
     player: IdName
     position: IdName
     location: tuple[float, float]
