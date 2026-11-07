@@ -1,0 +1,397 @@
+[
+  {
+    "id": "4a44199a-3111-4e28-b567-9c1393e68dff",
+    "index": 1,
+    "period": 1,
+    "timestamp": "00:00:00.000",
+    "minute": 0,
+    "second": 0,
+    "type": {
+      "id": 35,
+      "name": "Starting XI"
+    },
+    "possession": 1,
+    "possession_team": {
+      "id": 771,
+      "name": "France"
+    },
+    "play_pattern": {
+      "id": 1,
+      "name": "Regular Play"
+    },
+    "team": {
+      "id": 771,
+      "name": "France"
+    },
+    "duration": 0.0,
+    "tactics": {
+      "formation": 442,
+      "lineup": [
+        {
+          "player": {
+            "id": 3099,
+            "name": "Hugo Lloris"
+          },
+          "position": {
+            "id": 1,
+            "name": "Goalkeeper"
+          },
+          "jersey_number": 1
+        },
+        {
+          "player": {
+            "id": 5476,
+            "name": "Benjamin Pavard"
+          },
+          "position": {
+            "id": 2,
+            "name": "Right Back"
+          },
+          "jersey_number": 2
+        },
+        {
+          "player": {
+            "id": 5485,
+            "name": "Raphaël Varane"
+          },
+          "position": {
+            "id": 3,
+            "name": "Right Center Back"
+          },
+          "jersey_number": 4
+        },
+        {
+          "player": {
+            "id": 5492,
+            "name": "Samuel Yves Umtiti"
+          },
+          "position": {
+            "id": 5,
+            "name": "Left Center Back"
+          },
+          "jersey_number": 5
+        },
+        {
+          "player": {
+            "id": 5484,
+            "name": "Lucas Hernández Pi"
+          },
+          "position": {
+            "id": 6,
+            "name": "Left Back"
+          },
+          "jersey_number": 21
+        },
+        {
+          "player": {
+            "id": 20004,
+            "name": "Paul Pogba"
+          },
+          "position": {
+            "id": 9,
+            "name": "Right Defensive Midfield"
+          },
+          "jersey_number": 6
+        },
+        {
+          "player": {
+            "id": 3961,
+            "name": "N''Golo Kanté"
+          },
+          "position": {
+            "id": 11,
+            "name": "Left Defensive Midfield"
+          },
+          "jersey_number": 13
+        },
+        {
+          "player": {
+            "id": 3009,
+            "name": "Kylian Mbappé Lottin"
+          },
+          "position": {
+            "id": 12,
+            "name": "Right Midfield"
+          },
+          "jersey_number": 10
+        },
+        {
+          "player": {
+            "id": 4375,
+            "name": "Blaise Matuidi"
+          },
+          "position": {
+            "id": 16,
+            "name": "Left Midfield"
+          },
+          "jersey_number": 14
+        },
+        {
+          "player": {
+            "id": 5487,
+            "name": "Antoine Griezmann"
+          },
+          "position": {
+            "id": 22,
+            "name": "Right Center Forward"
+          },
+          "jersey_number": 7
+        },
+        {
+          "player": {
+            "id": 3604,
+            "name": "Olivier Giroud"
+          },
+          "position": {
+            "id": 24,
+            "name": "Left Center Forward"
+          },
+          "jersey_number": 9
+        }
+      ]
+    }
+  },
+  {
+    "id": "6d7450f7-2590-4b04-a2ae-9ed11602e342",
+    "index": 5,
+    "period": 1,
+    "timestamp": "00:00:00.400",
+    "minute": 0,
+    "second": 0,
+    "type": {
+      "id": 30,
+      "name": "Pass"
+    },
+    "possession": 2,
+    "possession_team": {
+      "id": 785,
+      "name": "Croatia"
+    },
+    "play_pattern": {
+      "id": 9,
+      "name": "From Kick Off"
+    },
+    "team": {
+      "id": 785,
+      "name": "Croatia"
+    },
+    "player": {
+      "id": 5472,
+      "name": "Mario Mandžukić"
+    },
+    "position": {
+      "id": 23,
+      "name": "Center Forward"
+    },
+    "location": [
+      61.0,
+      41.0
+    ],
+    "duration": 1.159,
+    "related_events": [
+      "3e17cab8-367e-47bb-b942-1d7a0b6f8ae5"
+    ],
+    "pass": {
+      "recipient": {
+        "id": 5469,
+        "name": "Marcelo Brozović"
+      },
+      "length": 11.045361,
+      "angle": 3.050933,
+      "height": {
+        "id": 1,
+        "name": "Ground Pass"
+      },
+      "end_location": [
+        50.0,
+        42.0
+      ],
+      "type": {
+        "id": 65,
+        "name": "Kick Off"
+      },
+      "body_part": {
+        "id": 40,
+        "name": "Right Foot"
+      }
+    }
+  },
+  {
+    "id": "4a44199a-3111-4e28-b567-9c1393e68dff",
+    "index": 1,
+    "period": 1,
+    "timestamp": "00:00:00.000",
+    "minute": 0,
+    "second": 0,
+    "type": {
+      "id": 35,
+      "name": "Starting XI"
+    },
+    "possession": 1,
+    "possession_team": {
+      "id": 771,
+      "name": "France"
+    },
+    "play_pattern": {
+      "id": 1,
+      "name": "Regular Play"
+    },
+    "team": {
+      "id": 771,
+      "name": "France"
+    },
+    "duration": 0.0,
+    "tactics": {
+      "formation": 442,
+      "lineup": [
+        {
+          "player": {
+            "id": 3099,
+            "name": "Hugo Lloris"
+          },
+          "position": {
+            "id": 1,
+            "name": "Goalkeeper"
+          },
+          "jersey_number": 1
+        },
+        {
+          "player": {
+            "id": 5476,
+            "name": "Benjamin Pavard"
+          },
+          "position": {
+            "id": 2,
+            "name": "Right Back"
+          },
+          "jersey_number": 2
+        },
+        {
+          "player": {
+            "id": 5485,
+            "name": "Raphaël Varane"
+          },
+          "position": {
+            "id": 3,
+            "name": "Right Center Back"
+          },
+          "jersey_number": 4
+        },
+        {
+          "player": {
+            "id": 5492,
+            "name": "Samuel Yves Umtiti"
+          },
+          "position": {
+            "id": 5,
+            "name": "Left Center Back"
+          },
+          "jersey_number": 5
+        },
+        {
+          "player": {
+            "id": 5484,
+            "name": "Lucas Hernández Pi"
+          },
+          "position": {
+            "id": 6,
+            "name": "Left Back"
+          },
+          "jersey_number": 21
+        },
+        {
+          "player": {
+            "id": 20004,
+            "name": "Paul Pogba"
+          },
+          "position": {
+            "id": 9,
+            "name": "Right Defensive Midfield"
+          },
+          "jersey_number": 6
+        },
+        {
+          "player": {
+            "id": 3961,
+            "name": "N''Golo Kanté"
+          },
+          "position": {
+            "id": 11,
+            "name": "Left Defensive Midfield"
+          },
+          "jersey_number": 13
+        },
+        {
+          "player": {
+            "id": 3009,
+            "name": "Kylian Mbappé Lottin"
+          },
+          "position": {
+            "id": 12,
+            "name": "Right Midfield"
+          },
+          "jersey_number": 10
+        },
+        {
+          "player": {
+            "id": 4375,
+            "name": "Blaise Matuidi"
+          },
+          "position": {
+            "id": 16,
+            "name": "Left Midfield"
+          },
+          "jersey_number": 14
+        },
+        {
+          "player": {
+            "id": 5487,
+            "name": "Antoine Griezmann"
+          },
+          "position": {
+            "id": 22,
+            "name": "Right Center Forward"
+          },
+          "jersey_number": 7
+        },
+        {
+          "player": {
+            "id": 3604,
+            "name": "Olivier Giroud"
+          },
+          "position": {
+            "id": 24,
+            "name": "Left Center Forward"
+          },
+          "jersey_number": 9
+        }
+      ]
+    }
+  },
+  {
+    "id": "53b99dbb-7609-463b-881b-5b337278dc46",
+    "index": 96,
+    "period": 1,
+    "timestamp": "00:01:33.720",
+    "minute": 1,
+    "second": 33,
+    "type": {
+      "id": 5,
+      "name": "Camera On"
+    },
+    "possession": 5,
+    "possession_team": {
+      "id": 771,
+      "name": "France"
+    },
+    "play_pattern": {
+      "id": 1,
+      "name": "Regular Play"
+    },
+    "team": {
+      "id": 771,
+      "name": "France"
+    },
+    "duration": 0.0
+  }
+]
