@@ -66,10 +66,16 @@ class PassEvent(BaseEvent):
 
 
 def event_type_name(v: Any) -> str | None:
-    type_name = v["type"]["name"]
-    if isinstance(type_name, str):
-        return type_name
-    return None
+    if not isinstance(v, dict) or "type" not in v:
+        return None
+    if (
+        not isinstance(v["type"], dict)
+        or "name" not in v["type"]
+        or not isinstance(v["type"]["name"], str)
+    ):
+        return None
+
+    return v["type"]["name"]
 
 
 def event_tag(v: Any) -> str | None:
