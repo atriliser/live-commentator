@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 
@@ -51,3 +52,16 @@ def test_file_not_found(tmp_path: Path) -> None:
 
     with pytest.raises(FileNotFoundError):
         load_events(file_not_exists)
+
+
+def test_validate_timestamp(tmp_path: Path) -> None:
+    events = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+    events[0]["timestamp"] = "abc"
+    bad_path = tmp_path / "bad_events.json"
+    bad_path.write_text(json.dumps(events), encoding="utf-8")
+    with pytest.raises(ValidationError) as exception_info:
+        load_events(bad_path)
+
+    validation_errors = exception_info.value.errors()
+    assert len(validation_errors) == 1
+    assert validation_errors[0]["type"] == "string_pattern_mismatch"

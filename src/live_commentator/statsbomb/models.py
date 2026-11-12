@@ -20,7 +20,7 @@ class BaseEvent(StatsBombModel):
     team: IdName
     index: int
     period: int
-    timestamp: str
+    timestamp: Annotated[str, Field(pattern=r"^\d{2}:\d{2}:\d{2}\.\d{3}$")]
     minute: int
     second: int
     possession_team: IdName
