@@ -1,9 +1,11 @@
+import asyncio
 import json
 from pathlib import Path
 
 import pytest
 
-from live_commentator.replay import pause_seconds, timestamp_to_seconds
+from live_commentator.replay import pause_seconds, replay, timestamp_to_seconds
+from live_commentator.statsbomb.loader import load_events
 from live_commentator.statsbomb.models import BaseEvent
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "events_8658_sample.json"
@@ -48,3 +50,17 @@ def test_pause_seconds(
     event_prev = make_event(period_prev, timestamp_prev)
     event_curr = make_event(period_curr, timestamp_curr)
     assert pause_seconds(event_prev, event_curr) == pause_expected
+
+
+def test_replay_puts_all_events_in_order() -> None:
+    events = load_events(FIXTURE_PATH)
+    queue: asyncio.Queue[BaseEvent | None] = asyncio.Queue()
+
+    asyncio.run(replay(events, queue, 10000))
+    assert queue.qsize() == len(events) + 1
+
+    result: list[BaseEvent | None] = []
+    while not queue.empty():
+        result.append(queue.get_nowait())
+
+    assert result == [*events, None]
