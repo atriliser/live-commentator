@@ -6,7 +6,7 @@ KNOWN_EVENT_TYPES = {"Starting XI", "Pass"}
 
 
 class StatsBombModel(BaseModel):
-    model_config = ConfigDict(frozen=True)
+    model_config = ConfigDict(frozen=True, validate_by_name=True)
 
 
 class IdName(StatsBombModel):
