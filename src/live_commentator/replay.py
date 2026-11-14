@@ -21,7 +21,8 @@ async def replay(
     queue: asyncio.Queue[BaseEvent | None],
     speedup: float,
 ) -> None:
-    await queue.put(events[0])
+    if events:
+        await queue.put(events[0])
     for event_prev, event_curr in itertools.pairwise(events):
         delay = pause_seconds(event_prev, event_curr) / speedup
         await asyncio.sleep(delay)
