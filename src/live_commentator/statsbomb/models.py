@@ -66,6 +66,8 @@ class PassEvent(BaseEvent):
 
 
 def event_type_name(v: Any) -> str | None:
+    if isinstance(v, BaseEvent):
+        return v.type.name
     if not isinstance(v, dict) or "type" not in v:
         return None
     if (
