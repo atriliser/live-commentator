@@ -64,3 +64,15 @@ def test_replay_puts_all_events_in_order() -> None:
         result.append(queue.get_nowait())
 
     assert result == [*events, None]
+
+
+def test_replay_puts_only_none_when_events_empty() -> None:
+    queue: asyncio.Queue[BaseEvent | None] = asyncio.Queue()
+
+    asyncio.run(replay([], queue, 1))
+
+    result: list[BaseEvent | None] = []
+    while not queue.empty():
+        result.append(queue.get_nowait())
+
+    assert result == [None]
