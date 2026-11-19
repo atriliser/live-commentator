@@ -1,12 +1,9 @@
 import asyncio
-from pathlib import Path
 
 from live_commentator.messages import MatchEventMessage
 from live_commentator.publisher import publish
-from live_commentator.statsbomb.loader import load_events
-from live_commentator.statsbomb.models import BaseEvent
+from live_commentator.statsbomb.models import BaseEvent, StatsBombEvent
 
-FIXTURE_PATH = Path(__file__).parent / "fixtures" / "events_8658_sample.json"
 TOPIC = "match-events"
 MATCH_ID = 8658
 
@@ -19,17 +16,18 @@ class FakeProducer:
         self.sent.append((topic, value, key))
 
 
-def test_publish_sends_one_message_per_event_in_order() -> None:
-    events = load_events(FIXTURE_PATH)
+def test_publish_sends_one_message_per_event_in_order(
+    sample_events: list[StatsBombEvent],
+) -> None:
     queue: asyncio.Queue[BaseEvent | None] = asyncio.Queue()
-    for event in events:
+    for event in sample_events:
         queue.put_nowait(event)
     queue.put_nowait(None)
     producer = FakeProducer()
 
     asyncio.run(publish(queue, producer, TOPIC, MATCH_ID))
 
-    assert len(producer.sent) == len(events)
+    assert len(producer.sent) == len(sample_events)
     assert all(topic == TOPIC for topic, _, _ in producer.sent)
     assert all(key == b"8658" for _, _, key in producer.sent)
     assert all(type(value) is bytes for _, value, _ in producer.sent)
@@ -37,4 +35,4 @@ def test_publish_sends_one_message_per_event_in_order() -> None:
         MatchEventMessage.model_validate_json(value).event
         for _, value, _ in producer.sent
     ]
-    assert received == events
+    assert received == sample_events

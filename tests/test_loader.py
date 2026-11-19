@@ -6,23 +6,27 @@ import pytest
 from pydantic import ValidationError
 
 from live_commentator.statsbomb.loader import load_events
-from live_commentator.statsbomb.models import BaseEvent, PassEvent, StartingXIEvent
-
-FIXTURE_PATH = Path(__file__).parent / "fixtures" / "events_8658_sample.json"
-
-
-def test_load_events() -> None:
-    events = load_events(FIXTURE_PATH)
-    assert len(events) == 3
-    assert type(events[0]) is StartingXIEvent
-    assert type(events[1]) is PassEvent
-    assert type(events[2]) is BaseEvent
+from live_commentator.statsbomb.models import (
+    BaseEvent,
+    PassEvent,
+    StartingXIEvent,
+    StatsBombEvent,
+)
 
 
-def test_log_warning_on_duplicates_load(caplog: pytest.LogCaptureFixture) -> None:
+def test_load_events(
+    sample_events: list[StatsBombEvent],
+) -> None:
+    assert len(sample_events) == 3
+    assert type(sample_events[0]) is StartingXIEvent
+    assert type(sample_events[1]) is PassEvent
+    assert type(sample_events[2]) is BaseEvent
+
+
+def test_log_warning_on_duplicates_load(sample_events_path: Path, caplog: pytest.LogCaptureFixture) -> None:
     duplicate_id = "4a44199a-3111-4e28-b567-9c1393e68dff"
 
-    load_events(FIXTURE_PATH)
+    load_events(sample_events_path)
     log_records = caplog.records
 
     assert len(log_records) == 1
@@ -54,8 +58,8 @@ def test_file_not_found(tmp_path: Path) -> None:
         load_events(file_not_exists)
 
 
-def test_validate_timestamp(tmp_path: Path) -> None:
-    events = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+def test_validate_timestamp(sample_events_path: Path, tmp_path: Path) -> None:
+    events = json.loads(sample_events_path.read_text(encoding="utf-8"))
     events[0]["timestamp"] = "abc"
     bad_path = tmp_path / "bad_events.json"
     bad_path.write_text(json.dumps(events), encoding="utf-8")

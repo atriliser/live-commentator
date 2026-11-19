@@ -1,19 +1,14 @@
 import asyncio
-import json
-from pathlib import Path
+from typing import Any
 
 import pytest
 
 from live_commentator.replay import pause_seconds, replay, timestamp_to_seconds
-from live_commentator.statsbomb.loader import load_events
-from live_commentator.statsbomb.models import BaseEvent
-
-FIXTURE_PATH = Path(__file__).parent / "fixtures" / "events_8658_sample.json"
-EVENTS = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
+from live_commentator.statsbomb.models import BaseEvent, StatsBombEvent
 
 
-def make_event(period: int, timestamp: str) -> BaseEvent:
-    new_event = {**EVENTS[0], "period": period, "timestamp": timestamp}
+def make_event(template: dict[str, Any], period: int, timestamp: str) -> BaseEvent:
+    new_event = {**template, "period": period, "timestamp": timestamp}
     return BaseEvent.model_validate(new_event)
 
 
@@ -41,29 +36,32 @@ def test_timestamp_to_seconds(timestamp_given: str, timestamp_expected: float) -
     ],
 )
 def test_pause_seconds(
+    sample_raw_events: list[dict[str, Any]],
     period_prev: int,
     timestamp_prev: str,
     period_curr: int,
     timestamp_curr: str,
     pause_expected: float,
 ) -> None:
-    event_prev = make_event(period_prev, timestamp_prev)
-    event_curr = make_event(period_curr, timestamp_curr)
+    template = sample_raw_events[0]
+    event_prev = make_event(template, period_prev, timestamp_prev)
+    event_curr = make_event(template, period_curr, timestamp_curr)
     assert pause_seconds(event_prev, event_curr) == pause_expected
 
 
-def test_replay_puts_all_events_in_order() -> None:
-    events = load_events(FIXTURE_PATH)
+def test_replay_puts_all_events_in_order(
+    sample_events: list[StatsBombEvent],
+) -> None:
     queue: asyncio.Queue[BaseEvent | None] = asyncio.Queue()
 
-    asyncio.run(replay(events, queue, 10000))
-    assert queue.qsize() == len(events) + 1
+    asyncio.run(replay(sample_events, queue, 10000))
+    assert queue.qsize() == len(sample_events) + 1
 
     result: list[BaseEvent | None] = []
     while not queue.empty():
         result.append(queue.get_nowait())
 
-    assert result == [*events, None]
+    assert result == [*sample_events, None]
 
 
 def test_replay_puts_only_none_when_events_empty() -> None:
