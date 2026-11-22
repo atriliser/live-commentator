@@ -4,7 +4,9 @@ from live_commentator.statsbomb.models import StatsBombEvent
 MATCH_ID = 8658
 
 
-def test_match_event_message_survives_json_round_trip(sample_events: list[StatsBombEvent],) -> None:
+def test_match_event_message_survives_json_round_trip(
+    sample_events: list[StatsBombEvent],
+) -> None:
     for event in sample_events:
         message = MatchEventMessage(match_id=MATCH_ID, event=event)
 

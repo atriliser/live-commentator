@@ -23,7 +23,9 @@ def test_load_events(
     assert type(sample_events[2]) is BaseEvent
 
 
-def test_log_warning_on_duplicates_load(sample_events_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+def test_log_warning_on_duplicates_load(
+    sample_events_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
     duplicate_id = "4a44199a-3111-4e28-b567-9c1393e68dff"
 
     load_events(sample_events_path)
