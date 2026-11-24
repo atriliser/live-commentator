@@ -31,3 +31,26 @@ def test_run_delivers_all_messages_to_every_subscriber_in_order(
 
     assert received_1 == expected
     assert received_2 == expected
+
+
+def test_run_skips_full_subscriber_and_still_delivers_to_others(
+    sample_events: list[StatsBombEvent],
+) -> None:
+    expected = [MatchEventMessage(match_id=MATCH_ID, event=e) for e in sample_events]
+
+    async def scenario() -> list[MatchEventMessage]:
+        broadcaster = Broadcaster()
+        slow = broadcaster.subscribe()
+        fast = broadcaster.subscribe()
+        while not slow.full():
+            slow.put_nowait(expected[0])
+        source: asyncio.Queue[MatchEventMessage] = asyncio.Queue()
+        task = asyncio.create_task(broadcaster.run(source))
+        for message in expected:
+            source.put_nowait(message)
+        received = [await fast.get() for _ in range(len(expected))]
+        task.cancel()
+        return received
+
+    received = asyncio.run(scenario())
+    assert received == expected
