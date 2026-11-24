@@ -54,3 +54,28 @@ def test_run_skips_full_subscriber_and_still_delivers_to_others(
 
     received = asyncio.run(scenario())
     assert received == expected
+
+
+def test_unsubscribed_queue_receives_nothing(
+    sample_events: list[StatsBombEvent],
+) -> None:
+    expected = [MatchEventMessage(match_id=MATCH_ID, event=e) for e in sample_events]
+
+    async def scenario() -> tuple[
+        list[MatchEventMessage], asyncio.Queue[MatchEventMessage]
+    ]:
+        broadcaster = Broadcaster()
+        kept = broadcaster.subscribe()
+        gone = broadcaster.subscribe()
+        broadcaster.unsubscribe(gone)
+        source: asyncio.Queue[MatchEventMessage] = asyncio.Queue()
+        task = asyncio.create_task(broadcaster.run(source))
+        for message in expected:
+            source.put_nowait(message)
+        received = [await kept.get() for _ in range(len(expected))]
+        task.cancel()
+        return received, gone
+
+    received, gone = asyncio.run(scenario())
+    assert received == expected
+    assert gone.empty()
