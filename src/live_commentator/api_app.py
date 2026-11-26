@@ -1,15 +1,18 @@
 import asyncio
 from collections.abc import AsyncIterable, AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from aiokafka import AIOKafkaConsumer
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.sse import EventSourceResponse
 
 from live_commentator.broadcaster import Broadcaster
 from live_commentator.consumer import consume
 from live_commentator.messages import MatchEventMessage
 
+STATIC_DIR = Path(__file__).parent / "static"
 BOOTSTRAP_SERVERS = "localhost:9092"
 TOPIC = "match-events"
 broadcaster = Broadcaster()
@@ -33,6 +36,11 @@ async def lifespan(api: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/")
+async def index() -> FileResponse:
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/health")
