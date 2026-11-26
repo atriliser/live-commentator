@@ -6,5 +6,14 @@
 </head>
 <body>
   <h1>Live Commentator</h1>
+  <script>
+    const source = new EventSource("/matches/8658/events");
+    source.onmessage = (event) => {
+      console.log("event:", event.data);
+    };
+    source.onerror = () => {
+      console.log("stream error, browser will retry");
+    };
+  </script>
 </body>
 </html>
