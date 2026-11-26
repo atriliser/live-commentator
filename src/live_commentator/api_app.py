@@ -41,7 +41,7 @@ def health() -> dict[str, str]:
 
 
 @app.get("/matches/{match_id}/events", response_class=EventSourceResponse)
-async def matches(match_id: int) -> AsyncIterable[MatchEventMessage]:
+async def match_events(match_id: int) -> AsyncIterable[MatchEventMessage]:
     events_queue = broadcaster.subscribe()
     try:
         while True:

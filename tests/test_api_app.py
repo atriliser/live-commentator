@@ -2,7 +2,7 @@ import asyncio
 from collections.abc import AsyncGenerator
 from typing import cast
 
-from live_commentator.api_app import broadcaster, matches
+from live_commentator.api_app import broadcaster, match_events
 from live_commentator.messages import MatchEventMessage
 from live_commentator.statsbomb.models import StatsBombEvent
 
@@ -17,7 +17,7 @@ def test_match_events_streams_messages_and_unsubscribes_on_close(
     async def scenario() -> tuple[list[MatchEventMessage], int, int]:
         source: asyncio.Queue[MatchEventMessage] = asyncio.Queue()
         task = asyncio.create_task(broadcaster.run(source))
-        stream = cast(AsyncGenerator[MatchEventMessage, None], matches(MATCH_ID))
+        stream = cast(AsyncGenerator[MatchEventMessage, None], match_events(MATCH_ID))
 
         first = asyncio.create_task(anext(stream))
         await asyncio.sleep(0)
