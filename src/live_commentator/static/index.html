@@ -6,11 +6,21 @@
 </head>
 <body>
   <h1>Live Commentator</h1>
+  <ul id="events"></ul>
+
   <script>
+    const list = document.getElementById("events");
     const source = new EventSource("/matches/8658/events");
+
     source.onmessage = (event) => {
-      console.log("event:", event.data);
+      const msg = JSON.parse(event.data);
+      const e = msg.event;
+      const player = e.player?.name ? ` — ${e.player.name}` : "";
+      const li = document.createElement("li");
+      li.textContent = `${e.minute}' ${e.type.name} — ${e.team.name}${player}`;
+      list.prepend(li);
     };
+
     source.onerror = () => {
       console.log("stream error, browser will retry");
     };
