@@ -17,3 +17,26 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: [ "CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092" ]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  kafka-init:
+    image: apache/kafka:4.3.1
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: [ "/opt/kafka/bin/kafka-topics.sh" ]
+    command:
+      - "--bootstrap-server"
+      - "kafka:19092"
+      - "--create"
+      - "--if-not-exists"
+      - "--topic"
+      - "match-events"
+      - "--partitions"
+      - "3"
+      - "--replication-factor"
+      - "1"
