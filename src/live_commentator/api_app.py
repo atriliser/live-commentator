@@ -1,4 +1,5 @@
 import asyncio
+import os
 from collections.abc import AsyncIterable, AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -12,9 +13,9 @@ from live_commentator.broadcaster import Broadcaster
 from live_commentator.consumer import consume
 from live_commentator.messages import MatchEventMessage
 
+BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+TOPIC = os.environ.get("KAFKA_TOPIC", "match-events")
 STATIC_DIR = Path(__file__).parent / "static"
-BOOTSTRAP_SERVERS = "localhost:9092"
-TOPIC = "match-events"
 broadcaster = Broadcaster()
 
 

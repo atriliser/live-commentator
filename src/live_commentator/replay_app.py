@@ -1,4 +1,5 @@
 import asyncio
+import os
 from pathlib import Path
 
 from aiokafka import AIOKafkaProducer
@@ -9,10 +10,10 @@ from live_commentator.statsbomb.loader import load_events
 from live_commentator.statsbomb.models import BaseEvent
 
 EVENTS_DATA_PATH = Path("data/raw/8658.json")
-BOOTSTRAP_SERVERS = "localhost:9092"
-MATCH_ID = 8658
-TOPIC = "match-events"
-SPEEDUP = 60.0
+BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+MATCH_ID = int(os.environ.get("MATCH_ID", "8658"))
+TOPIC = os.environ.get("KAFKA_TOPIC", "match-events")
+SPEEDUP = float(os.environ.get("REPLAY_SPEEDUP", "60.0"))
 
 
 async def main() -> None:
