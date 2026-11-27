@@ -18,7 +18,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     healthcheck:
-      test: [ "CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092" ]
+      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
       interval: 2s
       timeout: 5s
       retries: 15
@@ -28,7 +28,7 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-    entrypoint: [ "/opt/kafka/bin/kafka-topics.sh" ]
+    entrypoint: ["/opt/kafka/bin/kafka-topics.sh"]
     command:
       - "--bootstrap-server"
       - "kafka:19092"
@@ -40,3 +40,25 @@ services:
       - "3"
       - "--replication-factor"
       - "1"
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+
+  replay:
+    build: .
+    command: ["python", "-m", "live_commentator.replay_app"]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      REPLAY_START_DELAY_SECONDS: "15"
+    volumes:
+      - ./data:/app/data:ro
+    depends_on:
+      api:
+        condition: service_started
