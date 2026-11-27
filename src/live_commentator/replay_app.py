@@ -14,6 +14,7 @@ BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 MATCH_ID = int(os.environ.get("MATCH_ID", "8658"))
 TOPIC = os.environ.get("KAFKA_TOPIC", "match-events")
 SPEEDUP = float(os.environ.get("REPLAY_SPEEDUP", "60.0"))
+START_DELAY_SECONDS = int(os.environ.get("REPLAY_START_DELAY_SECONDS", "0"))
 
 
 async def main() -> None:
@@ -23,6 +24,7 @@ async def main() -> None:
     await producer.start()
 
     try:
+        await asyncio.sleep(START_DELAY_SECONDS)
         await asyncio.gather(
             replay(events, queue, SPEEDUP),
             publish(queue, producer, TOPIC, MATCH_ID),
